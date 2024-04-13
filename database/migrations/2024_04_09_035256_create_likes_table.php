@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('follows', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('following_user_id')->comment('フォローしているユーザID');
-            $table->unsignedBigInteger('followed_user_id')->comment('フォローされているユーザID');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+            $table->unsignedBigInteger('post_id')->comment('投稿ID');
             $table->timestamps();
 
-            $table->foreign('following_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('followed_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unique(['following_user_id', 'followed_user_id']);
+            $table->unique(['user_id', 'post_id']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('follows');
+        Schema::dropIfExists('likes');
     }
 };
