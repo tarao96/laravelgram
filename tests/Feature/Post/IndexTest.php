@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class PostIndexTest extends TestCase
+class IndexTest extends TestCase
 {
     /**
      * A basic feature test example.
@@ -16,7 +16,6 @@ class PostIndexTest extends TestCase
         $response = $this->get(route('post.index'));
         $response->assertStatus(200);
         $response->assertViewIs('app.index');
-        // マイページといテキストがあるか
         $response->assertSee('マイページ');
     }
 }
