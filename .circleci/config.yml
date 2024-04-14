@@ -12,6 +12,7 @@ jobs:
       DB_CONNECTION: testing
       MYSQL_ALLOW_EMPTY_PASSWORD: true
       MYSQL_ROOT_PASSWORD: ""
+      LARAVEL_BYPASS_ENV_CHECK: 1
     steps:
       - checkout
       - run:
