@@ -39,7 +39,14 @@ jobs:
             - vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
       - run:
+          name: Install Node.js
+          command: |
+            curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            npm install
+            npm run dev
+      - run:
           name: Run PHPUnit
           command: |
             php artisan migrate --force
-            vendor/bin/phpunit
+            php artisan test
