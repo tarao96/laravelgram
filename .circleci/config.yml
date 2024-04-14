@@ -9,8 +9,7 @@ jobs:
       - image: circleci/mysql:8.0
     working_directory: ~/laravelgram
     environment:
-      APP_ENV: testing
-      DB_CONNECTION: testing
+      DB_CONNECTION: mysql
       MYSQL_ALLOW_EMPTY_PASSWORD: true
       MYSQL_ROOT_PASSWORD: ""
     steps:
