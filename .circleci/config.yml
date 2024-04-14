@@ -34,10 +34,13 @@ jobs:
           name: Install PHP libraries
           command: composer install
       - run:
-          name: create test_db and run migrate
+          name: Create database
           command: |
-            mysql -u root -e 'CREATE DATABASE laravelgram_test_db;'
-            php artisan migrate --env=testing
+            sudo apt-get update && sudo apt-get install -y mysql-client
+            mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS laravelgram_test_db;"
+      - run:
+          name: Run migrate
+          command: php artisan migrate --env=testing
       - save_cache:
           paths:
             - vendor
