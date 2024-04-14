@@ -47,5 +47,5 @@ jobs:
       - run:
           name: Run PHPUnit
           command: |
-            php artisan migrate --force
+            php artisan migrate --env=testing --force
             php artisan test
