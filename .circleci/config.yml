@@ -32,6 +32,8 @@ jobs:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
       - run:
+          command: sudo touch /tmp/mysql.sock && sudo chmod 777 /tmp/mysql.sock && sudo service mysql restart
+      - run:
           name: Install PHP libraries
           command: composer install
       - save_cache:
