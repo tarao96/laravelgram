@@ -21,14 +21,10 @@ executors:
 commands:
   run_test:
     steps:
-      - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
-      - run:
-          name: Wait for MySQL to be ready
-          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       - run:
           name: Install PHP libraries
           command: composer install
@@ -39,6 +35,7 @@ commands:
       - run:
           name: run migrate
           command: php artisan migrate --env=testing
+          requires:
       - run:
           name: Run PHPUnit
           command: php artisan test
@@ -47,7 +44,19 @@ jobs:
   build:
     executor: deploy_container
     steps:
+      - checkout
+  test:
+    steps:
       - run_test
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
 # jobs:
 #   build:
 #     docker:
