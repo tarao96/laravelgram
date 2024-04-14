@@ -27,13 +27,6 @@ commands:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
       - run:
-          name: Install PHP libraries
-          command: composer install
-      - save_cache:
-          paths:
-            - vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
-      - run:
           name: install dockerize
           command: |
             curl -sSfL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --import
@@ -50,6 +43,13 @@ commands:
           name: run migrate
           command: php artisan migrate --env=testing
           requires:
+      - run:
+          name: Install PHP libraries
+          command: composer install
+      - save_cache:
+          paths:
+            - vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
       - run:
           name: Run PHPUnit
           command: php artisan test
