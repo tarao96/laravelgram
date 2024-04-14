@@ -11,7 +11,7 @@ jobs:
           MYSQL_DATABASE: laravelgram_test_db
           MYSQL_USERNAME: "root"
           MYSQL_PASSWORD: ""
-      - image: circleci/mariadb:10.4
+      - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: laravelgram_test_db
           MYSQL_ALLOW_EMPTY_PASSWORD: true
@@ -36,8 +36,8 @@ jobs:
       - run:
           name: Create database and Run migrate
           command: |
-            sudo apt-get update && sudo apt-get install -y mariadb-client
-            sudo service mariadb start
+            sudo apt-get update && sudo apt-get install -y mysql-server mysql-client
+            sudo service mysql start
             mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS laravelgram_test_db;"
             php artisan migrate --env=testing
       - save_cache:
