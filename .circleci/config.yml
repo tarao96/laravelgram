@@ -34,8 +34,10 @@ jobs:
           name: Install PHP libraries
           command: composer install
       - run:
-          name: run migrate
-          command: php artisan migrate --env=testing
+          name: create test_db and run migrate
+          command: |
+            mysql -u root -e 'CREATE DATABASE laravelgram_test_db;'
+            php artisan migrate --env=testing
       - save_cache:
           paths:
             - vendor
