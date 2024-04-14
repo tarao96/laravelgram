@@ -1,0 +1,19 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/php:8.3.4
+      - image: cimg/mysql:8.0
+    environment:
+      - DB_CONNECTION: testing
+    steps:
+      - checkout
+      - run:
+          name: Docker php extensions install
+          command: sudo docker-php-ext-install pdo_mysql
+      - run:
+          name: install PHP libraries
+          command: composer install
+      - run:
+          name: Run PHPUnit
+          command: php artisan test
