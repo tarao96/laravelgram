@@ -1,49 +1,30 @@
 version: 2.1
 
-executors:
-  deploy_container:
+jobs:
+  build:
     docker:
-      - image: circleci/mysql:8.0
-        environment:
-          MYSQL_DATABSE: laravelgram_test_db
-          MYSQL_ROOT_HOST: "%"
-          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-          TZ: Asia/Tokyo
       - image: cimg/php:8.3.4
-
-commands:
-  run_test:
+      - image: circleci/mysql:8.0
+    environment:
+      DB_CONNECTION: testing
+    working_directory: ~/laravelgram
     steps:
       - checkout
+      - run:
+          name: Update apt-get
+          command: |
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E88979FB9B30ACF2
+            sudo apt-get update --allow-releaseinfo-change
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
       - run:
-          name: install dockerize
-          command: |
-            apt-get install -y sudo
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B7B3B788A8D3785C
-            sudo apt-get update
-            sudo apt-get install -y curl
-            curl -LO https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-            tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-            rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          environment:
-            DOCKERIZE_VERSION: v0.3.0
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: composer install
+          name: Install PHP libraries
           command: composer install
       - run:
           name: run migrate
           command: php artisan migrate --env=testing
-          requires:
-      - run:
-          name: Install PHP libraries
-          command: composer install
       - save_cache:
           paths:
             - vendor
@@ -51,43 +32,3 @@ commands:
       - run:
           name: Run PHPUnit
           command: php artisan test
-
-jobs:
-  build:
-    executor: deploy_container
-    steps:
-      - run_test
-# jobs:
-#   build:
-#     docker:
-#       - image: cimg/php:8.3.4
-#       - image: cimg/mysql:8.0
-#     environment:
-#       DB_CONNECTION: testing
-#       LARAVEL_BYPASS_ENV_CHECK: "1" # Set LARAVEL_BYPASS_ENV_CHECK to bypass environment check
-#     steps:
-#       - checkout
-#       - run:
-#           name: Docker php extensions install
-#           command: sudo docker-php-ext-install pdo_mysql
-#       - run:
-#           name: install PHP libraries
-#           command: composer install
-#       - run:
-#           name: Install Node.js and npm
-#           command: |
-#             curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-#             sudo apt-get install -y nodejs
-#       - run:
-#           name: build vite
-#           command: |
-#             npm install
-#             npm run dev
-#       - run:
-#           name: Setup MySQL and Laravel
-#           command: |
-#             mysql -u root -e 'CREATE DATABASE laravel_test;'
-#             php artisan migrate --env=testing
-#       - run:
-#           name: Run PHPUnit
-#           command: php artisan test
