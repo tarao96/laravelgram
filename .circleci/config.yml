@@ -41,5 +41,5 @@ jobs:
       - run:
           name: Run PHPUnit
           command: |
-            php artisan migrate
+            php artisan migrate --force
             vendor/bin/phpunit
