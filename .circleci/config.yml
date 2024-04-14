@@ -43,7 +43,7 @@ jobs:
           name: NPM install
           command: |
             npm ci
-            npm run dev
+            npm run build
       - run:
           name: Run PHPUnit
           command: |
