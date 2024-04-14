@@ -41,7 +41,7 @@ commands:
           command: php artisan test
 
 jobs:
-  run_test:
+  build:
     executor: deploy_container
     steps:
       - run_test
