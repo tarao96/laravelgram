@@ -9,7 +9,7 @@ executors:
           MYSQL_ROOT_HOST: "%"
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
           TZ: Asia/Tokyo
-      - image: cimg/php:8.3.4
+      - image: cimg/php:8.1.28-node
         environment:
           APP_ENV: testing
           DB_CONNECTION: testing
@@ -28,7 +28,7 @@ commands:
             - v1-dependencies-
       - run:
           name: Wait for PHP installation
-          command: sleep 30
+          command: sleep 60
       - run:
           name: install dockerize
           command: |
