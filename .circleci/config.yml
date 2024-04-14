@@ -16,7 +16,9 @@ jobs:
           command: composer install
       - run:
           name: migrate database
-          command: php artisan migrate --env=testing
+          command: |
+            mysql -u root -e 'CREATE DATABASE laravelgram_test_db;'
+            php artisan migrate --env=testing
       - run:
           name: Run PHPUnit
           command: php artisan test
