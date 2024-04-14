@@ -16,6 +16,13 @@ jobs:
           MYSQL_DATABASE: laravelgram_test_db
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_ROOT_HOST: "%"
+    services:
+      mysql:
+        image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: laravelgram_test_db
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_HOST: "%"
     environment:
       DB_CONNECTION: testing
     working_directory: ~/laravelgram
