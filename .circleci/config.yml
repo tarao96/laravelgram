@@ -1,35 +1,81 @@
 version: 2.1
-jobs:
-  build:
+
+executors:
+  deploy_container:
     docker:
       - image: cimg/php:8.3.4
-      - image: cimg/mysql:8.0
-    environment:
-      DB_CONNECTION: testing
-      LARAVEL_BYPASS_ENV_CHECK: "1" # Set LARAVEL_BYPASS_ENV_CHECK to bypass environment check
+        environment:
+          APP_ENV: testing
+          DB_CONNECTION: testing
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: laravelgram_test_db
+          DB_USERNAME: "root"
+          DB_PASSWORD: ""
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABSE: laravelgram_test_db
+          MYSQL_ROOT_HOST: "%"
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          TZ: Asia/Tokyo
+
+commands:
+  run_test:
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            - v1-dependencies-
       - run:
-          name: Docker php extensions install
-          command: sudo docker-php-ext-install pdo_mysql
-      - run:
-          name: install PHP libraries
+          name: Install PHP libraries
           command: composer install
+      - save_cache:
+          paths:
+            - vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
       - run:
-          name: Install Node.js and npm
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-      - run:
-          name: build vite
-          command: |
-            npm install
-            npm run dev
-      - run:
-          name: Setup MySQL and Laravel
-          command: |
-            mysql -u root -e 'CREATE DATABASE laravel_test;'
-            php artisan migrate --env=testing
+          name: run migrate
+          command: php artisan migrate --env=testing
       - run:
           name: Run PHPUnit
           command: php artisan test
+
+jobs:
+  run_test:
+    executor: deploy_container
+    steps:
+      - run_test
+# jobs:
+#   build:
+#     docker:
+#       - image: cimg/php:8.3.4
+#       - image: cimg/mysql:8.0
+#     environment:
+#       DB_CONNECTION: testing
+#       LARAVEL_BYPASS_ENV_CHECK: "1" # Set LARAVEL_BYPASS_ENV_CHECK to bypass environment check
+#     steps:
+#       - checkout
+#       - run:
+#           name: Docker php extensions install
+#           command: sudo docker-php-ext-install pdo_mysql
+#       - run:
+#           name: install PHP libraries
+#           command: composer install
+#       - run:
+#           name: Install Node.js and npm
+#           command: |
+#             curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+#             sudo apt-get install -y nodejs
+#       - run:
+#           name: build vite
+#           command: |
+#             npm install
+#             npm run dev
+#       - run:
+#           name: Setup MySQL and Laravel
+#           command: |
+#             mysql -u root -e 'CREATE DATABASE laravel_test;'
+#             php artisan migrate --env=testing
+#       - run:
+#           name: Run PHPUnit
+#           command: php artisan test
