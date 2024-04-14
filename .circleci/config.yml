@@ -5,7 +5,8 @@ jobs:
       - image: cimg/php:8.3.4
       - image: cimg/mysql:8.0
     environment:
-      - DB_CONNECTION: testing
+      DB_CONNECTION: testing
+      LARAVEL_BYPASS_ENV_CHECK: "1" # Set LARAVEL_BYPASS_ENV_CHECK to bypass environment check
     steps:
       - checkout
       - run:
