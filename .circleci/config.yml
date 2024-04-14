@@ -27,6 +27,9 @@ commands:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
       - run:
+          name: Wait for MySQL to be ready
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run:
           name: Install PHP libraries
           command: composer install
       - save_cache:
