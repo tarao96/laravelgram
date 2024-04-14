@@ -7,7 +7,9 @@ jobs:
       - image: circleci/mysql:8.0
     working_directory: ~/laravelgram
     environment:
-      DB_CONNECTION: testing
+      - APP_ENV: testing
+      - DB_CONNECTION: testing
+      - MYSQL_ALLOW_EMPTY_PASSWORD: true
     steps:
       - checkout
       - run:
@@ -28,4 +30,6 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
       - run:
           name: Run PHPUnit
-          command: vendor/bin/phpunit
+          command: |
+            php artisan migrate
+            vendor/bin/phpunit
