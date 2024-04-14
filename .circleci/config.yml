@@ -9,7 +9,7 @@ executors:
           MYSQL_ROOT_HOST: "%"
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
           TZ: Asia/Tokyo
-      - image: cimg/php:8.3.6-node
+      - image: cimg/php:8.3.4
         environment:
           APP_ENV: testing
           DB_CONNECTION: testing
