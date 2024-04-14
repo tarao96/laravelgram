@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -16,8 +17,9 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $user_id = User::where('email', 'admin@example.com')->first()->id;
         return [
-            'user_id' => 1,
+            'user_id' => $user_id,
             'title' => fake()->word(),
             'body' => fake()->text()
         ];
