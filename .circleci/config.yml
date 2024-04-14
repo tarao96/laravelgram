@@ -20,15 +20,11 @@ commands:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
       - run:
-          name: Wait for PHP installation
-          command: sleep 60
-      - run:
           name: install dockerize
           command: |
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
             apt-get update
             apt-get install -y curl
-            curl -sSfL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --import
-            gpg --batch --export "B7B3B788A8D3785C" > /etc/apt/keyrings/mysql.gpg
             curl -LO https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
             tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
             rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -37,6 +33,9 @@ commands:
       - run:
           name: Wait for db
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: composer install
+          command: composer install
       - run:
           name: run migrate
           command: php artisan migrate --env=testing
