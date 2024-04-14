@@ -22,7 +22,7 @@ commands:
       - run:
           name: install dockerize
           command: |
-          　apt-key adv --keyserver keyserver.ubuntu.com:80 --recv-keys B7B3B788A8D3785C
+            apt-key adv --keyserver keyserver.ubuntu.com:80 --recv-keys B7B3B788A8D3785C
             apt-get update --allow-releaseinfo-change
             apt-get install -y curl
             curl -LO https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
