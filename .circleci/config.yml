@@ -15,5 +15,15 @@ jobs:
           name: install PHP libraries
           command: composer install
       - run:
+          name: build vite
+          command: |
+            npm install
+            npm run dev
+      - run:
+          name: Setup MySQL and Laravel
+          command: |
+            mysql -u root -e 'CREATE DATABASE laravel_test;'
+            php artisan migrate --env=testing
+      - run:
           name: Run PHPUnit
           command: php artisan test
