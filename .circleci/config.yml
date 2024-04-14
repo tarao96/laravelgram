@@ -27,6 +27,9 @@ commands:
             - v1-dependencies-{{ checksum "composer.json" }}
             - v1-dependencies-
       - run:
+          name: Wait for PHP installation
+          command: sleep 30
+      - run:
           name: install dockerize
           command: |
             curl -sSfL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --import
