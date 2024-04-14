@@ -36,7 +36,9 @@ jobs:
       - run:
           name: Create database and Run migrate
           command: |
-            sudo apt-get update && sudo apt-get install -y mysql-server mysql-client
+            sudo apt-get update
+            sudo apt-get dist-upgrade
+            sudo apt-get install -y mysql-server mysql-client
             sudo service mysql start
             mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS laravelgram_test_db;"
             php artisan migrate --env=testing
