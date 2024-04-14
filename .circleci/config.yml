@@ -16,8 +16,6 @@ jobs:
           MYSQL_DATABASE: laravelgram_test_db
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_ROOT_HOST: "%"
-    environment:
-      DB_CONNECTION: testing
     working_directory: ~/laravelgram
     steps:
       - checkout
@@ -33,19 +31,10 @@ jobs:
       - run:
           name: Install PHP libraries
           command: composer install
-      - run:
-          name: Create database and Run migrate
-          command: |
-            sudo apt-get update
-            sudo apt-get dist-upgrade
-            sudo apt-get install -y mysql-server mysql-client
-            sudo service mysql start
-            mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS laravelgram_test_db;"
-            php artisan migrate --env=testing
       - save_cache:
           paths:
             - vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
       - run:
           name: Run PHPUnit
-          command: php artisan test
+          command: vendor/bin/phpunit
