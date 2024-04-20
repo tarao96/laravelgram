@@ -4,14 +4,17 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.1.28-node
-        environment:
-          DB_HOST: 127.0.0.1
       - image: circleci/mysql:8.0
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laravelgram_test_db
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
     working_directory: ~/laravelgram
     environment:
       DB_CONNECTION: testing
-      MYSQL_ALLOW_EMPTY_PASSWORD: true
-      MYSQL_ROOT_PASSWORD: ""
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
       LARAVEL_BYPASS_ENV_CHECK: 1
     steps:
       - checkout
