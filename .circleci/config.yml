@@ -53,3 +53,19 @@ jobs:
           command: |
             php artisan migrate --env=testing --force
             php artisan test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+  approve_merge:
+    jobs:
+      - hold:
+          type: approval
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
