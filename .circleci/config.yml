@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  test:
+  build:
     docker:
       - image: cimg/php:8.1.28-node
         environment:
@@ -9,11 +9,7 @@ jobs:
       - image: circleci/mysql:8.0
     working_directory: ~/laravelgram
     environment:
-      DB_CONNECTION: testing
-      DB_DATABASE: laravelgram_test_db
-      DB_USERNAME: root
-      DB_PASSWORD: ""
-      DB_PORT: 3306
+      DB_CONNECTION: circleci_testing
       MYSQL_ALLOW_EMPTY_PASSWORD: true
       MYSQL_ROOT_PASSWORD: ""
       LARAVEL_BYPASS_ENV_CHECK: 1
@@ -53,19 +49,3 @@ jobs:
           command: |
             php artisan migrate --env=testing --force
             php artisan test
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - test
-  approve_merge:
-    jobs:
-      - hold:
-          type: approval
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - main
