@@ -23,7 +23,33 @@
                     @csrf
                     <button class="del-btn">削除</button>
                 </form>
-                <button type="button" class="edit-btn">編集</button>
+                <button type="button" class="edit-btn" data-post-id="{{ $post->id }}">編集</button>
+            </div>
+        </div>
+        <div class="modal-wrapper" id="post-{{ $post->id }}">
+            <div class="modal">
+                <div class="modal-title">
+                    <h2>投稿更新</h2>
+                    <span class="close" data-post-id="{{ $post->id }}">×</span>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('post.update', ['id' => $post->id]) }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="post-image">投稿画像</label>
+                            <input type="file" name="post-image" id="post-image">
+                        </div>
+                        <div class="form-group">
+                            <label for="title">タイトル</label>
+                            <input type="text" name="title" id="title" placeholder="タイトル" value="{{ $post->title }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="body">本文</label>
+                            <textarea name="body" id="body" cols="50" rows="10" placeholder="本文">{{ $post->body }}</textarea>
+                        </div>
+                        <button type="submit" data-post-id="{{ $post->id }}">更新</button>
+                    </form>
+                </div>
             </div>
         </div>
         @endforeach
@@ -39,6 +65,42 @@
             e.preventDefault();
             if (confirm('本当に削除しますか？')) {
                 btn.closest('form').submit();
+            }
+        });
+    });
+
+    const editBtns = document.querySelectorAll('.edit-btn');
+    const modal = document.querySelector('.modal');
+    const closes = document.querySelectorAll('.close');
+    const form = document.querySelector('form');
+    const modalWrappers = document.querySelectorAll('.modal-wrapper');
+
+    editBtns.forEach(editBtn => {
+        editBtn.addEventListener('click', (e) => {
+            const postId = e.target.dataset.postId;
+            const modalWrapper = document.getElementById(`post-${postId}`);
+            modalWrapper.classList.add('is-show');
+        });
+
+        form.addEventListener('submit', (e) => {
+            const postId = e.target.dataset.postId;
+            const modalWrapper = document.getElementById(`post-${postId}`);
+            modalWrapper.classList.remove('is-show');
+        });
+    });
+
+    closes.forEach(close => {
+        close.addEventListener('click', (e) => {
+            const postId = e.target.dataset.postId;
+            const modalWrapper = document.getElementById(`post-${postId}`);
+            modalWrapper.classList.remove('is-show');
+        });
+    });
+
+    modalWrappers.forEach(modalWrapper => {
+        modalWrapper.addEventListener('click', (e) => {
+            if (!modalWrapper.querySelector('.modal').contains(e.target)) {
+                modalWrapper.classList.remove('is-show');
             }
         });
     });
