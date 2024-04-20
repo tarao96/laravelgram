@@ -8,12 +8,19 @@ body {
     background-color: rgba(0, 0, 0, 0.01);
 }
 
+/* ヘッダー */
+
 header {
     background-color: mediumaquamarine;
     width: 100%;
     padding: 20px 0;
     text-align: center;
     color: #fff;
+}
+
+.app-title {
+    text-decoration: none;
+    color: inherit;
 }
 
 /* 投稿一覧画面 */

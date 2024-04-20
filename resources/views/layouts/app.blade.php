@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <h1>Laravelgram</h1>
+        <h1><a href="{{ route('post.index') }}" class="app-title">Laravelgram</a></h1>
     </header>
     <main>
         <div class="container">
