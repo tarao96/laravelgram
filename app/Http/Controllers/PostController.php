@@ -29,4 +29,10 @@ class PostController extends Controller
 
         return redirect()->route('post.index');
     }
+
+    public function delete($id)
+    {
+        Post::find($id)->delete();
+        return redirect()->route('user.mypage');
+    }
 }

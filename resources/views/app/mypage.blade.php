@@ -18,7 +18,11 @@
                 {{ $post->body}}
             </div>
             <div class="post-btns">
-                <button type="button" class="del-btn">削除</button>
+                <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                    @method('DELETE')
+                    @csrf
+                    <button class="del-btn">削除</button>
+                </form>
                 <button type="button" class="edit-btn">編集</button>
             </div>
         </div>
@@ -28,4 +32,15 @@
 @endsection
 
 @section('script')
+<script>
+    const deleteBtns = document.querySelectorAll('.del-btn');
+    deleteBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('本当に削除しますか？')) {
+                btn.closest('form').submit();
+            }
+        });
+    });
+</script>
 @endsection

@@ -24,3 +24,4 @@ Route::get('/posts', [PostController::class, 'index'])->name('post.index');
 Route::get('/mypage', [UserController::class, 'mypage'])->name('user.mypage');
 Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
 Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
+Route::delete('/post/{id}', [PostController::class, 'delete'])->name('post.delete');
