@@ -30,9 +30,24 @@ class PostController extends Controller
         return redirect()->route('post.index');
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         Post::find($id)->delete();
+        return redirect()->route('user.mypage');
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'title' => ['required', 'max: 255'],
+            'body' => ['required'],
+        ]);
+
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->save();
+
         return redirect()->route('user.mypage');
     }
 }
