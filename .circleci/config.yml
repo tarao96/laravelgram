@@ -7,11 +7,6 @@ jobs:
         environment:
           DB_HOST: 127.0.0.1
       - image: circleci/mysql:8.0
-        environment:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: laravelgram_test_db
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
     working_directory: ~/laravelgram
     environment:
       DB_CONNECTION: testing
