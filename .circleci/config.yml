@@ -10,6 +10,10 @@ jobs:
     working_directory: ~/laravelgram
     environment:
       DB_CONNECTION: testing
+      DB_DATABASE: laravelgram_test_db
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+      DB_PORT: 3306
       MYSQL_ALLOW_EMPTY_PASSWORD: true
       MYSQL_ROOT_PASSWORD: ""
       LARAVEL_BYPASS_ENV_CHECK: 1
