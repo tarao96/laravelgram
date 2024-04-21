@@ -8,7 +8,7 @@
     @foreach ($posts as $post)
     <div class="card">
         <div class="card-img">
-            <img src="img/sample-img.jpeg" alt="サンプル画像">
+            <img src="{{ $post->image_path ? $post->image_path : 'img/sample-img.jpeg' }}" alt="サンプル画像">
         </div>
         <div class="card-body">
             <div class="card-title">
@@ -27,11 +27,11 @@
             <span class="close">×</span>
         </div>
         <div class="modal-body">
-            <form action="{{ route('post.store') }}" method="post">
+            <form action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="post-image">投稿画像</label>
-                    <input type="file" name="post-image" id="post-image">
+                    <input type="file" name="image" id="post-image">
                 </div>
                 <div class="form-group">
                     <label for="title">タイトル</label>

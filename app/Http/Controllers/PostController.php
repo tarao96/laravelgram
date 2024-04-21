@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -24,7 +25,9 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
         $post->user_id = $request->user()->id;
-        // $post->image_path = $request->image_path;
+        // s3に保存
+        $path = Storage::disk('s3')->put('images', $request->file('image'));
+        $post->image_path = Storage::disk('s3')->url($path);
         $post->save();
 
         return redirect()->route('post.index');
@@ -46,6 +49,10 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->title = $request->title;
         $post->body = $request->body;
+        if ($request->hasFile('image')) {
+            $path = Storage::disk('s3')->put('images', $request->file('image'));
+            $post->image_path = Storage::disk('s3')->url($path);
+        }
         $post->save();
 
         return redirect()->route('user.mypage');
