@@ -11,16 +11,28 @@ body {
 /* ヘッダー */
 
 header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     background-color: mediumaquamarine;
     width: 100%;
     padding: 20px 0;
-    text-align: center;
     color: #fff;
 }
 
 .app-title {
     text-decoration: none;
     color: inherit;
+}
+
+.logout-btn {
+    background-color: tomato;
+    outline: none;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 /* 投稿一覧画面 */

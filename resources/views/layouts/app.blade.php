@@ -9,7 +9,12 @@
 </head>
 <body>
     <header>
+        <div class="spacer"></div>
         <h1><a href="{{ route('post.index') }}" class="app-title">Laravelgram</a></h1>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button class="logout-btn">ログアウト</button>
+        </form>
     </header>
     <main>
         <div class="container">
