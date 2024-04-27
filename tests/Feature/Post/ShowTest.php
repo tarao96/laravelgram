@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class EditTest extends TestCase
+class ShowTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -19,11 +19,11 @@ class EditTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_edit(): void
+    public function test_show(): void
     {
-        $response = $this->get(route('post.edit', ['id' => 1]));
+        $response = $this->get(route('post.show', ['id' => 1]));
         $response->assertStatus(200);
-        $response->assertViewIs('post.edit');
-        $response->assertSee('投稿編集');
+        $response->assertViewIs('app.show');
+        $response->assertSee('投稿詳細');
     }
 }
